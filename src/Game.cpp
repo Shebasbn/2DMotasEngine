@@ -1,23 +1,22 @@
 #include "Game.h"
+#include "Logger.h"
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 #include <glm/glm.hpp>
 #include <iostream>
 
 Game::Game() {
-    // TODO:...
-    std::cout << "Calling Game constructor!" << std::endl;
+    Logger::Log("Game constructor called!");
     isRunning = false;
 }
 Game::~Game() {
-    // TODO:..
-    std::cout << "Calling Game Destructor!" << std::endl;
+    Logger::Log("Game destructor called!"); 
 }
 
 void Game::Initialize() {
     std::cout << "Initializing Game!" << std::endl;
     if (SDL_Init(SDL_INIT_EVERYTHING) != 0) {
-        std::cerr << "Error initializing SDL." << std::endl;
+        Logger::Error("Error initializing SDL.");
         return;
     }
 
@@ -36,18 +35,18 @@ void Game::Initialize() {
         SDL_WINDOW_FULLSCREEN*/
     );
     if (!window) {
-        std::cerr << "Error creating SDL Window." << std::endl;
+        Logger::Error("Error creating SDL Window.");
         return;
     }
 
     renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
     if (!renderer) {
-        std::cerr << "Error Creating SDL Window." << std::endl;
+        Logger::Error("Error Creating SDL renderer.");
         return;
     }
 
     if (SDL_SetWindowFullscreen(window, SDL_WINDOW_FULLSCREEN != 0)) {
-        std::cerr << "Error in setting fullscreen." << std::endl;
+        Logger::Error("Error in setting fullscreen.");
         return;
     }
     
@@ -98,6 +97,10 @@ void Game::Render() {
     //SDL_Texture* texture = SDL_CreateTextureFromSurface(renderer, surface);
     //SDL_FreeSurface(surface);
     SDL_Texture* texture = IMG_LoadTexture(renderer, "./assets/images/tank-tiger-right.png");
+    if (!texture) {
+        Logger::Error("Failed to load texture");
+        return;
+    }
 
     // Destination rectangle that we want to place our texture on
     SDL_Rect dstRect = { 
@@ -106,9 +109,12 @@ void Game::Render() {
         32, 
         32 
     };
-    SDL_RenderCopy(renderer, texture, NULL, &dstRect);
-    SDL_DestroyTexture(texture);
+    if (SDL_RenderCopy(renderer, texture, NULL, &dstRect) != 0) {
+        Logger::Error("Failed to copy texture to rendering target");
+        return;
+    }
 
+    SDL_DestroyTexture(texture);
     SDL_RenderPresent(renderer); 
 }
 void Game::Run() {
