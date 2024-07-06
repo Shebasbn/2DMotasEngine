@@ -22,9 +22,9 @@ typedef std::vector<LogEntry> LogBook;
 class Logger {
     public:
         static LogBook logBook;
-        static void Log(const LogMessage& message);
-        static void Warn(const LogMessage& message);
-        static void Error(const LogMessage& message);
+        static void Log(const LogMessage& messages);
+        static void Warn(const LogMessage& messages);
+        static void Error(const LogMessage& messages);
 };
 
 #endif
