@@ -14,7 +14,7 @@ Game::~Game() {
 }
 
 void Game::Initialize() {
-    std::cout << "Initializing Game!" << std::endl;
+    Logger::Log("Initializing Game!");
     if (SDL_Init(SDL_INIT_EVERYTHING) != 0) {
         Logger::Error("Error initializing SDL.");
         return;
@@ -126,7 +126,7 @@ void Game::Run() {
     }
 }
 void Game::Destroy() {
-    std::cout << "Destroying Game!" << std::endl;
+    Logger::Log("Destroying Game!");
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);
     SDL_Quit();
