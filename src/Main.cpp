@@ -1,12 +1,13 @@
-#include <iostream>
 #include "./Game/Game.h"
+#include <iostream>
 
 int main() {
-    Game game;
-    
-    game.Initialize();
-    game.Run();
-    game.Destroy();
+  MotasEngine::Game game;
+  game.Initialize();
+  game.Run();
+  game.Destroy();
 
-    return 0;
+  std::cout << "Hello, world!" << std::endl;
+
+  return 0;
 }
